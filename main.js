@@ -15,6 +15,7 @@ function restart(){
   next = "O";
   button.style.display="none";
   username.style.display="none";
+  lbl.style.display="none";
 }
 function onWon(){
   button.style.display="block";
@@ -43,8 +44,9 @@ function matchIn(){
     let nextKey;
     for(let i in snap.val())if(snap.val()[i].gameStarted===false){nextKey=i;break;};
     if(!nextKey)return newGame();
-    games.child(nextKey).update({gameStarted:true,opponent:key});
+    games.child(nextKey).update({gameStarted:true,opponent:username.value});
     opKey=nextKey;
+    games.child(opKey).onDisconnect().remove();
     restart();
     curr="O";
   })
@@ -64,6 +66,7 @@ function newGame(){
     curr="X";
     initUpdates();
   });
+  games.child(opKey).onDisconnect().remove();
 }
 function matchOut(){
   games.update({[opKey]:null});
@@ -84,6 +87,7 @@ let board=document.getElementById("board"),
 status=document.getElementById("status"),
 button=document.getElementById("play"),
 username=document.getElementById("name"),
+lbl=document.getElementById("place"),
 database=firebase.database(),
 users=database.ref("users"),
 games=database.ref("games"),
@@ -129,8 +133,7 @@ button.addEventListener("click",e=>{
   isMatching?matchIn():matchOut();
 })
 loading();
-users.onDisconnect().update({[key]:null});
-games.onDisconnect().update({[opKey]:null});
+users.child(key).onDisconnect().remove();
 //addEventListener("beforeunload",quit);
 //addEventListener("unload",quit);
 //updateStatus();
