@@ -29,10 +29,10 @@ function updateStatus() {
 }
 function initUpdates(){
   games.child(opKey).off();
-  //TODO: get the key of the game   
   games.child(opKey).on("value",snap=>{
     game=snap.val().board;
     turn=snap.val().turn;
+    game.forEach((a,i)=>tiles[i].innerText=a);
     updateStatus();
   })
 }
@@ -61,6 +61,7 @@ function newGame(){
     if(!snap.val().gameStarted)return;
     restart();
     curr="X";
+    initUpdates();
   });
 }
 function matchOut(){
@@ -68,7 +69,7 @@ function matchOut(){
   games.child(opKey).off();
 }
 function quit(){
-  database.ref().update({["/users/"+key]:null,["/games/"+key]:null});
+  database.ref().update({["/users/"+key]:null,["/games/"+opKey]:null});
 }
 function updateUsername(){
   users.update({[key]:username.value});
