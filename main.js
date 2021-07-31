@@ -32,7 +32,8 @@ function initUpdates(){
   //TODO: get the key of the game   
   games.child(opKey).on("value",snap=>{
     game=snap.val().board;
-    turn=snap.val();
+    turn=snap.val().turn;
+    updateStatus();
   })
 }
 function matchIn(){
@@ -116,6 +117,7 @@ for(let m in tiles){
     playMove(m);
     gameEnded=hasWon()||hasDrawn();
     if(hasWon())onWon();
+    updateBoard();
     //if(!gameEnded){playRandom()};
     //if(gameEnded)setTimeout(reset,250);
     updateStatus();
