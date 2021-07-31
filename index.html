@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-database.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyCHwIpx-lDAXrcKrNc4ApBHnZy3gbfqlfY",
+      authDomain: "tictac-73edf.firebaseapp.com",
+      projectId: "tictac-73edf",
+      storageBucket: "tictac-73edf.appspot.com",
+      databaseURL:"https://tictac-73edf-default-rtdb.asia-southeast1.firebasedatabase.app",
+      messagingSenderId: "336756675445",
+      appId: "1:336756675445:web:97dfc67e54fc483473b93c",
+      measurementId: "G-GYXWFF16DP"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+  <table id="board">
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+  <h1 id="status">Tic Tac Toe</h1>
+  <label>Username:</label><input placeholder="Username" id="name" value="Guest">
+  <div id="play">Play</div>
+  <script src="util.js"></script>
+  <script src="main.js"></script>
+</body>
+
+</html>
