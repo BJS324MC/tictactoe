@@ -30,6 +30,7 @@ function updateStatus() {
 function initUpdates(){
   games.child(opKey).off();
   games.child(opKey).on("value",snap=>{
+    if(!snap.exists())alert("The opponent has left the game!")
     game=snap.val().board;
     turn=snap.val().turn;
     game.forEach((a,i)=>tiles[i].innerText=a);
@@ -67,9 +68,6 @@ function newGame(){
 function matchOut(){
   games.update({[opKey]:null});
   games.child(opKey).off();
-}
-function quit(){
-  database.ref().update({["/users/"+key]:null,["/games/"+opKey]:null});
 }
 function updateUsername(){
   users.update({[key]:username.value});
@@ -131,6 +129,8 @@ button.addEventListener("click",e=>{
   isMatching?matchIn():matchOut();
 })
 loading();
-addEventListener("beforeunload",quit);
-addEventListener("unload",quit);
+users.onDisconnect().update({[key]:null});
+games.onDisconnect().update({[opKey]:null});
+//addEventListener("beforeunload",quit);
+//addEventListener("unload",quit);
 //updateStatus();
