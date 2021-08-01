@@ -5,10 +5,7 @@ body {
   text-align: center;
 }
 #board{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform: translate(-50%,-50%);
+  margin: 10px auto;
   border-collapse: collapse;
   table-layout: fixed;
 }
@@ -31,20 +28,14 @@ input{
   color:white;
   font-size: 30pt;
   padding:20px;
-  width:20%;
-  position:absolute;
-  top:90%;
-  left:50%;
+  display: inline-block;
+  margin-top:10px;
   text-shadow: 2px 2px black;
-  transform: translate(-50%,-50%);
 }
 #vs{
   display:none;
-  position:absolute;
-  top:90%;
-  left:50%;
+  margin:0 auto;
   text-align: center;
-  transform: translate(-50%,-50%);
   border:3px solid red;
   padding:10px;
 }

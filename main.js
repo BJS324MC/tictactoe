@@ -15,11 +15,11 @@ function restart(){
   next = "O";
   button.style.display="none";
   username.style.display="none";
-  vs.style.display="block";
+  vs.style.display="inline-block";
   lbl.style.display="none";
 }
 function onWon(){
-  button.style.display="block";
+  button.style.display="inline-block";
   vs.style.display="none";
   games.child(opKey).off();
   opKey=null;
@@ -30,11 +30,11 @@ function onWon(){
   next = "O";
 }
 function updateStatus() {
-  status.innerText = hasWon() ? next + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
+  status.innerText = hasWon() ? turn + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
 }
 function initUpdates(){
   isMatching=false;
-  vs.style.display="block";
+  vs.style.display="inline-block";
   games.child(opKey).off();
   games.child(opKey).on("value",snap=>{
     if(!snap.exists()){
@@ -44,10 +44,10 @@ function initUpdates(){
       next = "O";
       opKey = null;
       active = false;
-      username.style.display="inline";
+      username.style.display="block";
       lbl.style.display="block";
       button.innerText = "Play";
-      button.style.display="block";
+      button.style.display="inline-block";
       vs.style.display="none";
       vs.innerText="";
       loading();
