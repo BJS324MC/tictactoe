@@ -44,7 +44,7 @@ function initUpdates(){
       next = "O";
       opKey = null;
       active = false;
-      username.style.display="block";
+      username.style.display="inline";
       lbl.style.display="block";
       button.innerText = "Play";
       button.style.display="block";
@@ -57,7 +57,7 @@ function initUpdates(){
     next=turn==="X"?"O":"X";
     game.forEach((a,i)=>tiles[i].innerText=a);
     if(hasWon())onWon();
-    else if(hasDrawn()){updateStatus();setTimeout(()=>{game=Array.from({length:9},()=>"");updateBoard()},250)}
+    else if(hasDrawn()){updateStatus();setTimeout(()=>{game=Array.from({length:9},()=>"");updateBoard();},250)}
     else updateStatus();
   })
 }
@@ -145,11 +145,10 @@ for(let m in tiles){
   tiles[m].addEventListener("click",()=>{
     if(turn!==curr || gameEnded || !isLegal(m))return 0;
     playMove(m);
-    gameEnded=hasWon()||hasDrawn();
+    //gameEnded=hasWon()||hasDrawn();
     updateBoard();
     //if(!gameEnded){playRandom()};
     //if(gameEnded)setTimeout(reset,250);
-    updateStatus();
   });
 };
 button.addEventListener("click",e=>{
