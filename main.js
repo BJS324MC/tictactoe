@@ -49,6 +49,7 @@ function matchIn(){
     games.child(opKey).onDisconnect().remove();
     restart();
     curr="O";
+    initUpdates();
   })
 }
 function newGame(){
