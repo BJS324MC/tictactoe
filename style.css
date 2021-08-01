@@ -5,7 +5,7 @@ body {
   text-align: center;
 }
 #board{
-  position:fixed;
+  position:absolute;
   left:50%;
   top:50%;
   transform: translate(-50%,-50%);
@@ -32,7 +32,7 @@ input{
   font-size: 30pt;
   padding:20px;
   width:20%;
-  position:fixed;
+  position:absolute;
   top:90%;
   left:50%;
   text-shadow: 2px 2px black;

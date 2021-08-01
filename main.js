@@ -24,17 +24,20 @@ function onWon(){
   active=false;
   turn="X";
   next="O";
+  button.innerText="Play";
 }
 function updateStatus() {
   status.innerText = hasWon() ? next + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
 }
 function initUpdates(){
+  isMatching=false;
   games.child(opKey).off();
   games.child(opKey).on("value",snap=>{
     if(!snap.exists())alert("The opponent has left the game!")
     game=snap.val().board;
     turn=snap.val().turn;
     game.forEach((a,i)=>tiles[i].innerText=a);
+    if(hasWon())onWon();
     updateStatus();
   })
 }
@@ -120,7 +123,6 @@ for(let m in tiles){
     if(turn!==curr || gameEnded || !isLegal(m))return 0;
     playMove(m);
     gameEnded=hasWon()||hasDrawn();
-    if(hasWon())onWon();
     updateBoard();
     //if(!gameEnded){playRandom()};
     //if(gameEnded)setTimeout(reset,250);
