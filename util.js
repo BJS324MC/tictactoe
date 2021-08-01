@@ -35,6 +35,7 @@ function set(m,v){
   tiles[m].innerText=v;
 }
 function loading() {
+  status.innerText = "Tic Tac Toe";
   loadscreen = setInterval(() => {
     if (gameEnded) reset();
     playRandom();

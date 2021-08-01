@@ -57,7 +57,7 @@ function initUpdates(){
     next=turn==="X"?"O":"X";
     game.forEach((a,i)=>tiles[i].innerText=a);
     if(hasWon())onWon();
-    else if(hasDrawn()){updateStatus();setTimeout(()=>{game=Array.from({length:9},()=>"");updateBoard();},250)}
+    else if(hasDrawn()){updateStatus();setTimeout(()=>{reset();updateBoard()},250)}
     else updateStatus();
   })
 }
