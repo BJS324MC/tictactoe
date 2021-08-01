@@ -44,6 +44,8 @@ function initUpdates(){
       next = "O";
       opKey = null;
       active = false;
+      username.style.display="block";
+      lbl.style.display="block";
       button.innerText = "Play";
       button.style.display="block";
       vs.style.display="none";
@@ -55,8 +57,8 @@ function initUpdates(){
     next=turn==="X"?"O":"X";
     game.forEach((a,i)=>tiles[i].innerText=a);
     if(hasWon())onWon();
-    else if(hasDrawn()){updateBoard();setTimeout(()=>{game=Array.from({length:9},()=>"");updateBoard()},250)}
-    else updateBoard();
+    else if(hasDrawn()){updateStatus();setTimeout(()=>{game=Array.from({length:9},()=>"");updateBoard()},250)}
+    else updateStatus();
   })
 }
 function matchIn(){
@@ -68,7 +70,7 @@ function matchIn(){
     games.child(nextKey).update({gameStarted:true,opponent:username.value});
     opKey=nextKey;
     games.child(opKey).onDisconnect().remove();
-    vs.innerText=snap.val().host+" (X) vs "+username.value+" (O)";
+    vs.innerText=snap.val()[nextKey].host+" (X) vs "+username.value+" (O)";
     restart();
     curr="O";
     initUpdates();
