@@ -40,7 +40,6 @@ function initUpdates(){
     next=turn==="X"?"O":"X";
     game.forEach((a,i)=>tiles[i].innerText=a);
     if(hasWon())onWon();
-    updateStatus();
   })
 }
 function matchIn(){
