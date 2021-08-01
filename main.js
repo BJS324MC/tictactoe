@@ -15,31 +15,48 @@ function restart(){
   next = "O";
   button.style.display="none";
   username.style.display="none";
+  vs.style.display="block";
   lbl.style.display="none";
 }
 function onWon(){
   button.style.display="block";
+  vs.style.display="none";
   games.child(opKey).off();
   opKey=null;
   active=false;
-  turn="X";
-  next="O";
   button.innerText="Play";
   updateStatus();
+  turn = "X";
+  next = "O";
 }
 function updateStatus() {
   status.innerText = hasWon() ? next + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
 }
 function initUpdates(){
   isMatching=false;
+  vs.style.display="block";
   games.child(opKey).off();
   games.child(opKey).on("value",snap=>{
-    if(!snap.exists())alert("The opponent has left the game!");
+    if(!snap.exists()){
+      alert("The opponent has left the game!");
+      games.child(opKey).off();
+      turn = "X";
+      next = "O";
+      opKey = null;
+      active = false;
+      button.innerText = "Play";
+      button.style.display="block";
+      vs.style.display="none";
+      vs.innerText="";
+      loading();
+    };
     game=snap.val().board;
     turn=snap.val().turn;
     next=turn==="X"?"O":"X";
     game.forEach((a,i)=>tiles[i].innerText=a);
     if(hasWon())onWon();
+    else if(hasDrawn()){updateBoard();setTimeout(()=>{game=Array.from({length:9},()=>"");updateBoard()},250)}
+    else updateBoard();
   })
 }
 function matchIn(){
@@ -51,6 +68,7 @@ function matchIn(){
     games.child(nextKey).update({gameStarted:true,opponent:username.value});
     opKey=nextKey;
     games.child(opKey).onDisconnect().remove();
+    vs.innerText=snap.val().host+" (X) vs "+username.value+" (O)";
     restart();
     curr="O";
     initUpdates();
@@ -67,6 +85,7 @@ function newGame(){
   });
   games.child(opKey).on("value",snap=>{
     if(!snap.val().gameStarted)return;
+    vs.innerText=username.value+" (X) vs "+snap.val().opponent+" (O)";
     restart();
     curr="X";
     initUpdates();
@@ -93,6 +112,7 @@ status=document.getElementById("status"),
 button=document.getElementById("play"),
 username=document.getElementById("name"),
 lbl=document.getElementById("place"),
+vs=document.getElementById("vs"),
 database=firebase.database(),
 users=database.ref("users"),
 games=database.ref("games"),

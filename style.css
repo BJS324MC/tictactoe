@@ -38,3 +38,13 @@ input{
   text-shadow: 2px 2px black;
   transform: translate(-50%,-50%);
 }
+#vs{
+  display:none;
+  position:absolute;
+  top:90%;
+  left:50%;
+  text-align: center;
+  transform: translate(-50%,-50%);
+  border:3px solid red;
+  padding:10px;
+}
