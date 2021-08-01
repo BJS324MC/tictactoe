@@ -25,6 +25,7 @@ function onWon(){
   turn="X";
   next="O";
   button.innerText="Play";
+  updateStatus();
 }
 function updateStatus() {
   status.innerText = hasWon() ? next + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
@@ -33,9 +34,10 @@ function initUpdates(){
   isMatching=false;
   games.child(opKey).off();
   games.child(opKey).on("value",snap=>{
-    if(!snap.exists())alert("The opponent has left the game!")
+    if(!snap.exists())alert("The opponent has left the game!");
     game=snap.val().board;
     turn=snap.val().turn;
+    next=turn==="X"?"O":"X";
     game.forEach((a,i)=>tiles[i].innerText=a);
     if(hasWon())onWon();
     updateStatus();
