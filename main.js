@@ -44,7 +44,7 @@ function initUpdates(){
       next = "O";
       opKey = null;
       active = false;
-      username.style.display="block";
+      username.style.display="inline";
       lbl.style.display="block";
       button.innerText = "Play";
       button.style.display="inline-block";
