@@ -26,11 +26,15 @@ function onWon(){
   active=false;
   button.innerText="Play";
   updateStatus();
+  updateNutz();
   turn = "X";
   next = "O";
 }
 function updateStatus() {
-  status.innerText = hasWon() ? turn + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
+  status.innerText = hasWon() ? next + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
+}
+function updateNutz(){
+  for(b of nutz)if(game.every((a,i)=>a===b[i]))status.innerText = next+" WON WITH DEEZ NUTS";
 }
 function initUpdates(){
   isMatching=false;
@@ -45,7 +49,7 @@ function initUpdates(){
       opKey = null;
       active = false;
       username.style.display="inline";
-      lbl.style.display="block";
+      lbl.style.display="inline-block";
       button.innerText = "Play";
       button.style.display="inline-block";
       vs.style.display="none";
@@ -130,6 +134,10 @@ opKey=null,
 active=false,
 isMatching=false,
 gameEnded=false,
+nutz=[["O","X","O"," ","X"," "," ","X"," "],[" ","X"," "," ","X"," ","O","X","O"],
+["O"," "," ","X","X","X","O"," "," "],[" "," ","O","X","X","X"," "," ","O"],
+["X","O"," ","O","X"," "," "," ","X"],["X"," "," "," ","X","O"," ","O","X"],
+[" ","O","X"," ","X","O","X"," "," "],[" "," ","X","O","X"," ","X","O"," "]],
 loadscreen;
 board.style.width=innerWidth/5+"px";
 board.style.height=innerWidth/5+"px";
@@ -143,6 +151,10 @@ for(let i=0;i<3;i++)for(let j=0;j<3;j++){
 }
 for(let m in tiles){
   tiles[m].addEventListener("click",()=>{
+    if(m==="4" && game[m]==="O"){
+      let pp=confirm("You found a chest! Open it?")
+      if(pp)window.open("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
+    };
     if(turn!==curr || gameEnded || !isLegal(m))return 0;
     playMove(m);
     //gameEnded=hasWon()||hasDrawn();
