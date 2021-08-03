@@ -123,6 +123,7 @@ database=firebase.database(),
 users=database.ref("users"),
 games=database.ref("games"),
 tiles=[],
+hitted=Math.random()<0.2,
 game=Array.from({length:9},a=>" "),
 mates=["012","345","678",
        "036","147","258",
@@ -152,7 +153,7 @@ for(let i=0;i<3;i++)for(let j=0;j<3;j++){
 for(let m in tiles){
   tiles[m].addEventListener("click",()=>{
     if(m==="4" && game[m]==="O" && !active){
-      let pp=confirm("You found a chest! Open it?")
+      let pp=confirm("You found a chest! Open it?");
       if(pp)window.open("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
     };
     if(turn!==curr || gameEnded || !isLegal(m))return 0;
@@ -165,12 +166,13 @@ for(let m in tiles){
 };
 button.addEventListener("click",e=>{
   if(active)return;
-  button.innerText=isMatching?"Play":"Matching...";
+  button.innerText=isMatching?"Play":(Math.random()<0.1?"Spying...":"Matching...");
   isMatching=!isMatching;
   isMatching?matchIn():matchOut();
 })
 loading();
 users.child(key).onDisconnect().remove();
+if(hitted)document.querySelector("title").innerHTML="Naughts and Crosses";
 //addEventListener("beforeunload",quit);
 //addEventListener("unload",quit);
 //updateStatus();

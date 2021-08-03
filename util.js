@@ -35,11 +35,11 @@ function set(m,v){
   tiles[m].innerText=v;
 }
 function loading() {
-  status.innerText = "Tic Tac Toe";
+  status.innerText = hitted?"Naughts And Crosses":"Tic Tac Toe";
   loadscreen = setInterval(() => {
     if (gameEnded) reset();
     playRandom();
     gameEnded = hasWon() || hasDrawn();
-    status.innerText = "Tic Tac Toe";
+    status.innerText = hitted?"Naughts And Crosses":"Tic Tac Toe";
   }, 500);
 };
