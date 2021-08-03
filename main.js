@@ -151,7 +151,7 @@ for(let i=0;i<3;i++)for(let j=0;j<3;j++){
 }
 for(let m in tiles){
   tiles[m].addEventListener("click",()=>{
-    if(m==="4" && game[m]==="O"){
+    if(m==="4" && game[m]==="O" && !active){
       let pp=confirm("You found a chest! Open it?")
       if(pp)window.open("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
     };
