@@ -34,6 +34,29 @@ function set(m,v){
   game[m]=v;
   tiles[m].innerText=v;
 }
+function aimove(){
+  let blocks=[],
+  wins=[];
+  for(let m of mates){
+    let checks=0,
+    marks=0,
+    pos=null;
+    for(let i=0;i<m.length;i++){
+      let s=game[m.charAt(i)];
+      if(s===next)checks++;
+      else if(s===turn)marks++;
+      else if(s===" ")pos=m.charAt(i);
+    }
+    if(m.length-checks===1 && pos)blocks.push(pos);
+    if(m.length-marks===1 && pos)wins.push(pos);
+  };
+  if(wins.length)playMove(pickRandom(wins));
+  else if(blocks.length)playMove(pickRandom(blocks));
+  else playRandom();
+}
+function onDraw(){
+  if(hasDrawn())setTimeout(()=>{reset();updateStatus();},250)
+}
 function loading() {
   status.innerText = hitted?"Naughts And Crosses":"Tic Tac Toe";
   loadscreen = setInterval(() => {

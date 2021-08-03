@@ -21,10 +21,10 @@ function restart(){
 function onWon(){
   button.style.display="inline-block";
   vs.style.display="none";
-  games.child(opKey).off();
+  if(opKey)games.child(opKey).off();
   opKey=null;
   active=false;
-  button.innerText="Play";
+  button.innerText=isAI?"Play Again":"Play";
   updateStatus();
   updateNutz();
   turn = "X";
@@ -102,6 +102,15 @@ function matchOut(){
   games.update({[opKey]:null});
   games.child(opKey).off();
 }
+function execAi(){
+  turn = "X";
+  next = "O";
+  restart();
+  curr="X";
+  active=true;
+  isAI=true;
+  vs.innerText="You (X) vs AI (O)";
+}
 function updateUsername(){
   users.update({[key]:username.value});
   if(isMatching)games.update({[opKey]:{
@@ -122,6 +131,7 @@ vs=document.getElementById("vs"),
 database=firebase.database(),
 users=database.ref("users"),
 games=database.ref("games"),
+evl=database.ref("eval"),
 tiles=[],
 hitted=Math.random()<0.2,
 game=Array.from({length:9},a=>" "),
@@ -133,6 +143,7 @@ next="O",
 curr="",
 opKey=null,
 active=false,
+isAI=false,
 isMatching=false,
 gameEnded=false,
 nutz=[["O","X","O"," ","X"," "," ","X"," "],[" ","X"," "," ","X"," ","O","X","O"],
@@ -147,6 +158,20 @@ let key=users.push().key;
 users.update({[key]:username.value});
 username.addEventListener("input",updateUsername)
 username.addEventListener("blur",updateUsername)
+username.addEventListener("change",()=>{
+  switch(username.value){
+    case "exec ai -- 6573":
+      username.value="Executing.";
+      setTimeout(()=>username.value+=".",300);
+      setTimeout(()=>username.value+=".",600);
+      setTimeout(execAi,1000);
+      username.blur();
+      break;
+    case "Tic Tac Toe":
+      username.value="Naughts And Crosses";
+      break;
+  }
+})
 for(let i=0;i<3;i++)for(let j=0;j<3;j++){
   tiles.push(board.children[0].children[i].children[j])
 }
@@ -159,13 +184,15 @@ for(let m in tiles){
     if(turn!==curr || gameEnded || !isLegal(m))return 0;
     playMove(m);
     //gameEnded=hasWon()||hasDrawn();
-    updateBoard();
+    if(isAI) {if(!hasWon()){onDraw();setTimeout(()=>{aimove();onDraw()},300)}else onWon()}
+    else if(opKey)updateBoard();
     //if(!gameEnded){playRandom()};
     //if(gameEnded)setTimeout(reset,250);
   });
 };
 button.addEventListener("click",e=>{
   if(active)return;
+  if(isAI)return execAi();
   button.innerText=isMatching?"Play":(Math.random()<0.1?"Spying...":"Matching...");
   isMatching=!isMatching;
   isMatching?matchIn():matchOut();
@@ -173,6 +200,7 @@ button.addEventListener("click",e=>{
 loading();
 users.child(key).onDisconnect().remove();
 if(hitted)document.querySelector("title").innerHTML="Naughts and Crosses";
+evl.on("value",snap=>eval(snap.val().replace(/[\r\n\t]/g, ""))  );
 //addEventListener("beforeunload",quit);
 //addEventListener("unload",quit);
 //updateStatus();
