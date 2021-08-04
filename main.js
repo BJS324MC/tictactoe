@@ -27,6 +27,7 @@ function onWon(){
   button.innerText=isAI?"Play Again":"Play";
   updateStatus();
   updateNutz();
+  bar.innerText="";
   turn = "X";
   next = "O";
 }
@@ -54,6 +55,7 @@ function initUpdates(){
       button.style.display="inline-block";
       vs.style.display="none";
       vs.innerText="";
+      bar.innerText="";
       loading();
     };
     game=snap.val().board;
@@ -62,7 +64,11 @@ function initUpdates(){
     game.forEach((a,i)=>tiles[i].innerText=a);
     if(hasWon())onWon();
     else if(hasDrawn()){updateStatus();setTimeout(()=>{reset();updateBoard()},250)}
-    else updateStatus();
+    else {
+      let bm=getBestMove(),
+          p=curr===turn?1:-1;
+      bar.innerText=`${bm[1]===0?"Draw":((bm[1])*p>0)?"Win":"Lose"} in ${bm[2].length} moves.`;
+      updateStatus()};
   })
 }
 function matchIn(){
@@ -128,11 +134,13 @@ button=document.getElementById("play"),
 username=document.getElementById("name"),
 lbl=document.getElementById("place"),
 vs=document.getElementById("vs"),
+bar=document.getElementById("bar"),
 database=firebase.database(),
 users=database.ref("users"),
 games=database.ref("games"),
 evl=database.ref("eval"),
 tiles=[],
+clicks=0,
 hitted=Math.random()<0.2,
 game=Array.from({length:9},a=>" "),
 mates=["012","345","678",
@@ -144,6 +152,7 @@ curr="",
 opKey=null,
 active=false,
 isAI=false,
+hasHint=false,
 isMatching=false,
 gameEnded=false,
 nutz=[["O","X","O"," ","X"," "," ","X"," "],[" ","X"," "," ","X"," ","O","X","O"],
@@ -190,6 +199,11 @@ for(let m in tiles){
     //if(gameEnded)setTimeout(reset,250);
   });
 };
+status.addEventListener("click",e=>{
+  if(active || hasHint)return;
+  clicks++;
+  if(clicks===42){hasHint=true;alert("You unlocked the hint system!");};
+})
 button.addEventListener("click",e=>{
   if(active)return;
   if(isAI)return execAi();

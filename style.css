@@ -39,3 +39,9 @@ input{
   border:3px solid red;
   padding:10px;
 }
+#bar{
+  display:block;
+  font-size:23pt;
+  text-align: center;
+  padding:10px;
+}
