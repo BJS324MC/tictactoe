@@ -65,9 +65,11 @@ function initUpdates(){
     if(hasWon())onWon();
     else if(hasDrawn()){updateStatus();setTimeout(()=>{reset();updateBoard()},250)}
     else {
-      let bm=getBestMove(),
+      if(hasHint){
+        let bm=getBestMove(),
           p=curr===turn?1:-1;
       bar.innerText=`${bm[1]===0?"Draw":((bm[1])*p>0)?"Win":"Lose"} in ${bm[2].length} moves.`;
+      }
       updateStatus()};
   })
 }
