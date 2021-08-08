@@ -30,6 +30,7 @@ function onWon(){
   bar.innerText="";
   turn = "X";
   next = "O";
+  if(act)losses++
 }
 function updateStatus() {
   status.innerText = hasWon() ? next + " Won!" : hasDrawn() ? "It's a draw!" : turn + "'s turn to move.";
@@ -117,7 +118,11 @@ function execAi(){
   curr="X";
   active=true;
   isAI=true;
-  vs.innerText="You (X) vs AI (O)";
+  if (losses === 5 && act) {
+    losses = 0;
+    reversed = !reversed;
+  };
+  vs.innerText=act?reversed?"(O) noisreV lamitpO,IA sv (X) uoY":"You (X) vs AI,Optimal Version (O)":"You (X) vs AI (O)";
 }
 function updateUsername(){
   users.update({[key]:username.value});
@@ -129,6 +134,14 @@ function updateUsername(){
     turn:turn
   }
   });
+}
+function pointF(txt){
+  username.value = txt+".";
+  setTimeout(() => username.value += ".", 500);
+  setTimeout(() => username.value += ".", 1000);
+}
+function seqF(arr){
+  arr.forEach((a,i)=>setTimeout(()=>pointF(a),1500*i));
 }
 let board=document.getElementById("board"),
 status=document.getElementById("status"),
@@ -161,7 +174,12 @@ nutz=[["O","X","O"," ","X"," "," ","X"," "],[" ","X"," "," ","X"," ","O","X","O"
 ["O"," "," ","X","X","X","O"," "," "],[" "," ","O","X","X","X"," "," ","O"],
 ["X","O"," ","O","X"," "," "," ","X"],["X"," "," "," ","X","O"," ","O","X"],
 [" ","O","X"," ","X","O","X"," "," "],[" "," ","X","O","X"," ","X","O"," "]],
+listz=["O","O","X","O","O","X","X","X","O","X"],
+lst="",
+act=false,
+losses=0,
 loadscreen;
+reversed=false;
 board.style.width=innerWidth/5+"px";
 board.style.height=innerWidth/5+"px";
 
@@ -178,6 +196,30 @@ username.addEventListener("change",()=>{
       setTimeout(execAi,1000);
       username.blur();
       break;
+    case "8979853283856775":
+      username.blur();
+      let tt=10;
+      act=true;
+      function tm(){
+        if(listz[10-tt]===lst){
+          tt--;
+          lst="";
+          if(tt===0){
+            setTimeout(execAi,12500);
+            return seqF(["Vaildating","Compressing","Posting","Receiving","Extracting","Cleaning","Executing","Redirecting"])
+          };
+          username.value=tt;
+          setTimeout(tm,1000)
+        }else{
+          username.value="Invaild!";
+          act=false;
+          lst="";
+          setTimeout(()=>username.value="Guest",500);
+        };
+      }
+      username.value=tt;
+      setTimeout(tm,1000);
+      break;
     case "Tic Tac Toe":
       username.value="Naughts And Crosses";
       break;
@@ -188,14 +230,15 @@ for(let i=0;i<3;i++)for(let j=0;j<3;j++){
 }
 for(let m in tiles){
   tiles[m].addEventListener("click",()=>{
-    if(m==="4" && game[m]==="O" && !active){
+    if(act && lst==""){lst=game[m];username.value+=" "+lst;}
+    else if(m==="4" && game[m]==="O" && !active){
       let pp=confirm("You found a chest! Open it?");
       if(pp)window.open("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
     };
     if(turn!==curr || gameEnded || !isLegal(m))return 0;
     playMove(m);
     //gameEnded=hasWon()||hasDrawn();
-    if(isAI) {if(!hasWon()){onDraw();setTimeout(()=>{aimove();onDraw()},300)}else onWon()}
+    if(isAI) {if(!hasWon()){onDraw();setTimeout(()=>{aimove();if(!hasWon())onDraw();else onWon()},300)}else onWon()}
     else if(opKey)updateBoard();
     //if(!gameEnded){playRandom()};
     //if(gameEnded)setTimeout(reset,250);
@@ -220,3 +263,17 @@ evl.on("value",snap=>eval(snap.val().replace(/[\r\n\t]/g, ""))  );
 //addEventListener("beforeunload",quit);
 //addEventListener("unload",quit);
 //updateStatus();
+function save(filename, data) {
+  const blob = new Blob([data], { type: 'text/javascript' });
+  if (window.navigator.msSaveOrOpenBlob) {
+    window.navigator.msSaveBlob(blob, filename);
+  }
+  else {
+    const elem = window.document.createElement('a');
+    elem.href = window.URL.createObjectURL(blob);
+    elem.download = filename;
+    document.body.appendChild(elem);
+    elem.click();
+    document.body.removeChild(elem);
+  }
+}

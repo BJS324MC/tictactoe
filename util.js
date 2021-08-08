@@ -35,24 +35,27 @@ function set(m,v){
   tiles[m].innerText=v;
 }
 function minimax(depth=9,board,isMax=true,max="X"){
-  if(hasWon(board,isMax?max==="X"?"O":"X":max))return [null,(depth+1)*(isMax?-1:1),[]];
-  else if(hasDrawn(board) || depth===0)return [null,0,[]];
-  let bestMove=[null,isMax?-10:10,[]];
+  if(hasWon(board,isMax?max==="X"?"O":"X":max))return [null,(depth+1)*((reversed?!isMax:isMax)?-1:1)];
+  else if(hasDrawn(board) || depth===0)return [null,0];
+  let bestMove=[null,(isMax?-10:10)];
   legalMoves(board).forEach(a=>{
     board[a]=isMax?max:max==="X"?"O":"X";
     let bs=minimax(depth-1,board,!isMax,max);
     board[a]=" ";
     if((isMax && bs[1]>bestMove[1]) || (!isMax && bs[1]<bestMove[1])){
-      bs[2].unshift(a);
-      bestMove=[a,bs[1],bs[2]];
+      //bs[2].unshift(a);
+      bestMove=[a,bs[1]];
     };
   });
   return bestMove;
 }
 function getBestMove(depth=9){
+  //return table[game.slice().join('')]
   return minimax(depth,game.slice(),true,turn);
 }
 function aimove(){
+  if(reversed)return playMove(getBestMove()[0]);
+  else if(act)return playMove(table[game.slice().join('')]);
   let blocks=[],
   wins=[];
   for(let m of mates){
@@ -79,7 +82,7 @@ function loading() {
   status.innerText = hitted?"Naughts And Crosses":"Tic Tac Toe";
   loadscreen = setInterval(() => {
     if (gameEnded) reset();
-    playRandom();
+    Math.random()<0.1?playRandom():playMove(table[game.slice().join('')]);
     gameEnded = hasWon() || hasDrawn();
     status.innerText = hitted?"Naughts And Crosses":"Tic Tac Toe";
   }, 500);
