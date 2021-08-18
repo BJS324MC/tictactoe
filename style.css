@@ -251,6 +251,7 @@ input:focus {
   }
   body{
     text-align: center;
+    margin:0;
   }
   #play{
     margin:0 auto;
