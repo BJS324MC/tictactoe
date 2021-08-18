@@ -8,6 +8,9 @@
   <meta http-equiv='expires' content='0'>
   <meta http-equiv='pragma' content='no-cache'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <title>Tic Tac Toe</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,13 +18,14 @@
 <body>
   <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
   <script>
     var firebaseConfig = {
       apiKey: "AIzaSyCHwIpx-lDAXrcKrNc4ApBHnZy3gbfqlfY",
       authDomain: "tictac-73edf.firebaseapp.com",
       projectId: "tictac-73edf",
       storageBucket: "tictac-73edf.appspot.com",
-      databaseURL:"https://tictac-73edf-default-rtdb.asia-southeast1.firebasedatabase.app",
+      databaseURL: "https://tictac-73edf-default-rtdb.asia-southeast1.firebasedatabase.app",
       messagingSenderId: "336756675445",
       appId: "1:336756675445:web:97dfc67e54fc483473b93c",
       measurementId: "G-GYXWFF16DP"
@@ -29,8 +33,13 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
   </script>
-  <h1 id="status">Tic Tac Toe</h1>
-  <label id="place">Username:</label><input placeholder="Username" id="name" value="Guest">
+  <svg viewBox="0 0 100 100" width="100" height="100" id="logo">
+    <g transform="scale(0.2)">
+      <circle style="stroke: rgb(0, 0, 0); stroke-width: 8px; fill: rgb(255, 255, 255);" cx="243.983" cy="249.699" r="168.974"></circle>
+      <path d="M 854.0625 7.766 H 865.0625 V 274.5225 H 1131.819 V 285.5225 H 865.0625 V 552.279 H 854.0625 V 285.5225 H 587.306 V 274.5225 H 854.0625 Z" data-bx-shape="cross 587.306 7.766 544.513 544.513 11 11 0.5 1@a3547219" style="" transform="matrix(0.704255, -0.709947, 0.709947, 0.704255, -557.964494, 661.712727)" data-bx-origin="0.548 0.463"></path>
+    </g>
+  </svg>
+  <br>
   <table id="board">
     <tr>
       <td></td>
@@ -48,8 +57,69 @@
       <td></td>
     </tr>
   </table>
+  <h1 id="header">Tic Tac Toe</h1><sub style="color:lightblue">Cleaned</sub>
+  <h1 id="status"></h1>
+  <div id="back">
+    <svg viewBox="0 0 80 80" width="20" height="20">
+      <line style="stroke: rgb(0, 0, 0); stroke-width: 7px;" x1="36.773" y1="2" x2="3" y2="41.452"></line>
+      <line style="stroke: rgb(0, 0, 0); stroke-width: 7px;" x1="36.86" y1="76" x2="3.087" y2="36.549"></line>
+    </svg>Back To Home</div><br>
+  <div id="profile"><img src="nobody.png" width="100" height="100" style="border-radius:10%">
+    <div id="info">
+      <img src="edit.png" width="20" height="20" style="display: none;opacity: 0.2;float:right">
+      <p id="username">-</p>
+      <span>-</span> <svg viewBox="0 0 20 20" width="20" height="20">
+        <g transform="scale(0.04)">
+          <path d="M 238.835 0.838 L 454.505 374.39 L 23.165 374.39 L 238.835 0.838 Z" style="fill: rgb(91, 84, 84);" data-bx-shape="triangle 23.165 0.838 431.34 373.552 0.5 0 1@8d688bbd"></path>
+          <path d="M 595.613 870.079 L 815.976 1251.76 L 375.251 1251.76 L 595.613 870.079 Z" style="fill: rgb(154, 88, 88);" transform="matrix(0.520968, 0.853576, -0.853576, 0.520968, 894.618069, -850.580653)" data-bx-shape="triangle 375.251 870.079 440.725 381.681 0.5 0 1@12054bf9"></path>
+        </g>
+      </svg>
+    </div>
+    <div id="info2">
+      <input type="file" id="avatar" name="avatar" accept=".jpg, .jpeg, .png" style="display: none">
+      <label for="avatar">
+        <img src="edit.png" id="editpic" width="20" height="20" style="display: none;opacity: 0.2">
+      </label>
+      <p style="display: none;">Description:</p>
+      <div id="descript"> <span></span> <img src="edit.png" width="20" height="20" style="opacity: 0.2;float:right"></div>
+    </div>
+    <div id="login">Log In<br></div><br>
+  </div>
+  <div id="dropdown">
+    <input placeholder="Email" type="email"><br>
+    <input placeholder="Password" type="password">
+  </div>
+  <p id="create">No accounts? <a href="#">Create one!</a></p>
+  <br>
+  <div id="vs">
+    <div id="p1">
+      <img src="nobody.png" width="100" height="100" style="border-radius:10%">
+      <p>-</p>
+      <span>-</span><svg viewBox="0 0 20 20" width="20" height="20">
+        <g transform="scale(0.04)">
+          <path d="M 238.835 0.838 L 454.505 374.39 L 23.165 374.39 L 238.835 0.838 Z" style="fill: rgb(91, 84, 84);" data-bx-shape="triangle 23.165 0.838 431.34 373.552 0.5 0 1@8d688bbd"></path>
+          <path d="M 595.613 870.079 L 815.976 1251.76 L 375.251 1251.76 L 595.613 870.079 Z" style="fill: rgb(154, 88, 88);" transform="matrix(0.520968, 0.853576, -0.853576, 0.520968, 894.618069, -850.580653)" data-bx-shape="triangle 375.251 870.079 440.725 381.681 0.5 0 1@12054bf9"></path>
+        </g>
+      </svg>
+    </div>
+    <div id="p2">
+      <img src="nobody.png" width="100" height="100" style="border-radius:10%">
+      <p>-</p>
+      <span>-</span><svg viewBox="0 0 20 20" width="20" height="20">
+        <g transform="scale(0.04)">
+          <path d="M 238.835 0.838 L 454.505 374.39 L 23.165 374.39 L 238.835 0.838 Z" style="fill: rgb(91, 84, 84);" data-bx-shape="triangle 23.165 0.838 431.34 373.552 0.5 0 1@8d688bbd"></path>
+          <path d="M 595.613 870.079 L 815.976 1251.76 L 375.251 1251.76 L 595.613 870.079 Z" style="fill: rgb(154, 88, 88);" transform="matrix(0.520968, 0.853576, -0.853576, 0.520968, 894.618069, -850.580653)" data-bx-shape="triangle 375.251 870.079 440.725 381.681 0.5 0 1@12054bf9"></path>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <div id="logout">Log out</div>
   <div id="play">Play</div>
-  <div id="vs">hhhhhhhhh vs eeeeeeee</div>
+  <div id="logger">Log In</div>
+  <div id="google">
+    <img src="google.png" width="30" height="30">
+    <span>Log In With Google</span>
+  </div>
   <div id="bar"></div>
   <script src="util.js"></script>
   <script src="table.js"></script>
