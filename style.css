@@ -118,7 +118,7 @@ input{
   display:none;
   margin:0 auto;
   box-shadow: 0 0 20px #eee;
-  background-image:url("X.png");
+  background-image:url("images/X.png");
   background-repeat: no-repeat;
   background-size:auto 110%;
   background-position: center;
@@ -251,7 +251,7 @@ input:focus {
   }
   body{
     text-align: center;
-    margin:0;
+    margin:20px 0;
   }
   #play{
     margin:0 auto;
@@ -269,6 +269,6 @@ input:focus {
     margin:0 60px;
   }
   #p2{
-    margin: 0 60px;
+    margin:0 60px;
   }
 }

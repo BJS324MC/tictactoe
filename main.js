@@ -16,8 +16,8 @@ function hideElements() {
   header.style.display = "none";
   login.style.display = "none";
   back.style.display = "none";
-  profile.style.display="none";
-  vs.style.backgroundImage="url("+curr+".png)";
+  profile.style.display = "none";
+  vs.style.backgroundImage = "url(images/" + curr + ".png)";
 }
 
 function restart() {
@@ -39,9 +39,9 @@ function onWon() {
   button.innerText = isAI ? "Play Again" : "Play";
   updateStatus();
   updateNutz();
-  let vlt=isAI ?0:(turn===curr)?-20:20;
-  vs.querySelector("#p1 > span").innerText=thisUser.points + (vlt<0?"-"+(-vlt):"+"+vlt);
-  thisUser.points+=vlt;
+  let vlt = isAI ? 0 : (turn === curr) ? -20 : 20;
+  vs.querySelector("#p1 > span").innerText = thisUser.points + (vlt < 0 ? "-" + (-vlt) : "+" + vlt);
+  thisUser.points += vlt;
   updateUser();
   bar.innerText = "";
   turn = "X";
@@ -158,9 +158,9 @@ function execAi() {
     reversed = !reversed;
   };
   setVs({
-    username:act ? reversed ? "noisreV lamitpO,IA": "AI,Optimal Version" : "AI",
-    points:10000,
-    picture:act ? "bot2.png":"bot.png"
+    username: act ? reversed ? "noisreV lamitpO,IA" : "AI,Optimal Version" : "AI",
+    points: 10000,
+    picture:"images/bot"+(act?"2":"")+".png"
   })
 }
 
@@ -170,7 +170,7 @@ function readUser(func) {
     thisUser = snap.val();
     username.innerText = thisUser.username;
     profile.querySelector("span").innerText = thisUser.points;
-    profile.querySelector("img").src = thisUser.picture || "nobody.png";
+    profile.querySelector("img").src = thisUser.picture || "images/nobody.png";
     descript.querySelector("span").innerText = thisUser.description;
   })
 }
@@ -181,8 +181,8 @@ function updateUser() {
   });
   username.innerText = thisUser.username;
   profile.querySelector("span").innerText = thisUser.points;
-  profile.querySelector("img").src = thisUser.picture || "nobody.png";
-  descript.querySelector("span").innerText= thisUser.description;
+  profile.querySelector("img").src = thisUser.picture || "images/nobody.png";
+  descript.querySelector("span").innerText = thisUser.description;
   if (isMatching) games.update({
     [opKey]: {
       "host": thisUser,
@@ -197,7 +197,7 @@ function updateUser() {
 function setAccountInfo(user) {
   thisUser.username = user.displayName;
   thisUser.picture = user.photoURL;
-  thisUser.description="";
+  thisUser.description = "";
   updateUser();
 }
 
@@ -208,16 +208,18 @@ function setStateText(text) {
   google.style.display = "none";
   create.style.display = "none";
 }
-function setVs(user){
-  vs.querySelector("#p1 > img").src=thisUser.picture || "nobody.png";
-  vs.querySelector("#p1 > p").innerText=thisUser.username;
-  vs.querySelector("#p1 > span").innerText=thisUser.points;
-  vs.querySelector("#p2 > img").src=user.picture || "nobody.png";
-  vs.querySelector("#p2 > p").innerText=user.username;
-  vs.querySelector("#p2 > span").innerText=user.points;
+
+function setVs(user) {
+  vs.querySelector("#p1 > img").src = thisUser.picture || "images/nobody.png";
+  vs.querySelector("#p1 > p").innerText = thisUser.username;
+  vs.querySelector("#p1 > span").innerText = thisUser.points;
+  vs.querySelector("#p2 > img").src = user.picture || "images/nobody.png";
+  vs.querySelector("#p2 > p").innerText = user.username;
+  vs.querySelector("#p2 > span").innerText = user.points;
 }
-function homePage(){
-  isAI=false;
+
+function homePage() {
+  isAI = false;
   for (let n of document.querySelectorAll("td")) n.style.borderColor = "#4BD81E";
   status.style.display = "none";
   header.style.display = "inline-block";
@@ -240,15 +242,16 @@ function homePage(){
   profile.querySelector("br").style.display = "inline";
   username.style.fontSize = "15pt";
   username.style.margin = "20px 0";
-  descript.style.display="none";
-  profile.style.minWidth="0";
+  descript.style.display = "none";
+  profile.style.minWidth = "0";
   profile.querySelector("span").style.margin = "0";
   profile.querySelector("#info").style.display = "block";
-  profile.querySelector("#info2 > p").style.display="none";
-  profile.querySelector("#info > img").style.display="none";
-  profile.querySelector("#editpic").style.display="none";
-  button.innerText="Play";
+  profile.querySelector("#info2 > p").style.display = "none";
+  profile.querySelector("#info > img").style.display = "none";
+  profile.querySelector("#editpic").style.display = "none";
+  button.innerText = "Play";
 }
+
 function pointF(txt) {
   thisUser.username = txt + ".";
   setTimeout(() => thisUser.username += ".", 500);
@@ -275,15 +278,18 @@ let board = document.getElementById("board"),
   google = document.getElementById("google"),
   back = document.getElementById("back"),
   username = document.getElementById("username"),
-  logout=document.getElementById("logout"),
-  descript=document.getElementById("descript"),
+  logout = document.getElementById("logout"),
+  descript = document.getElementById("descript"),
   database = firebase.database(),
   users = database.ref("users"),
   games = database.ref("games"),
   evl = database.ref("eval"),
   thisUser = {
     username: "Guest" + (Math.random().toString().slice(2)),
-    points: 100
+    points: 100,
+    picture: null,
+    description:"",
+    online:true
   },
   tiles = [],
   clicks = 0,
@@ -410,7 +416,7 @@ button.addEventListener("click", e => {
 logout.addEventListener("click", e => {
   if (confirm("Are you sure you want to sign out?")) {
     firebase.auth().signOut();
-    login.innerText="Log In";
+    login.innerText = "Log In";
     document.body.style.animation = "disappear 0.5s";
     document.getElementById("logo").style.animation = "rotate 1s";
     document.getElementById("logo").addEventListener("animationend", function hand() {
@@ -447,52 +453,52 @@ login.addEventListener("click", e => {
       drop.style.display = "inline-block";
       mode = 0;
     }
-    else{
-      logout.style.display="inline-block";
-      profile.querySelector("br").style.display="none";
-      username.style.fontSize="30pt";
-      username.style.margin="0 20px";
-      profile.querySelector("span").style.margin="0 0 0 20px";
-      profile.querySelector("#info").style.display="inline-block";
-      descript.style.display="block";
-      profile.style.minWidth="50%";
-      profile.querySelector("#info2 > p").style.display="block";
-      profile.querySelector("#info > img").style.display="block";
-      profile.querySelector("#editpic").style.display="inline-block";
+    else {
+      logout.style.display = "inline-block";
+      profile.querySelector("br").style.display = "none";
+      username.style.fontSize = "30pt";
+      username.style.margin = "0 20px";
+      profile.querySelector("span").style.margin = "0 0 0 20px";
+      profile.querySelector("#info").style.display = "inline-block";
+      descript.style.display = "block";
+      profile.style.minWidth = "50%";
+      profile.querySelector("#info2 > p").style.display = "block";
+      profile.querySelector("#info > img").style.display = "block";
+      profile.querySelector("#editpic").style.display = "inline-block";
     }
   })
 })
-profile.querySelector("#info > img").addEventListener("click",e=>{
-  username.contentEditable="true";
+profile.querySelector("#info > img").addEventListener("click", e => {
+  username.contentEditable = "true";
   username.focus();
 })
-document.getElementById("avatar").addEventListener("change",e=>{
+document.getElementById("avatar").addEventListener("change", e => {
   console.log(e.target.files)
-  const reader=new FileReader();
-  reader.addEventListener("load",e=>{
-    profile.querySelector("img").src=e.target.result;
-    thisUser.picture=e.target.result;
+  const reader = new FileReader();
+  reader.addEventListener("load", e => {
+    profile.querySelector("img").src = e.target.result;
+    thisUser.picture = e.target.result;
     updateUser();
   })
   reader.readAsDataURL(e.target.files[0]);
 })
-username.addEventListener("input",e=>{
-  if(username.innerText.search(/[\r\n]/g)>-1){
-    username.innerText=username.innerText.replace(/[\r\n]/g, '');
+username.addEventListener("input", e => {
+  if (username.innerText.search(/[\r\n]/g) > -1) {
+    username.innerText = username.innerText.replace(/[\r\n]/g, '');
   }
-  if(username.innerText.length>40){
-    username.innerText=tmt;
+  if (username.innerText.length > 40) {
+    username.innerText = tmt;
   }
-  else tmt=username.innerText;
+  else tmt = username.innerText;
 })
 username.addEventListener("blur", e => {
-  username.contentEditable="false";
-  if(tmt!=="")thisUser.username = tmt;
-  else username.innerText=thisUser.username;
+  username.contentEditable = "false";
+  if (tmt !== "") thisUser.username = tmt;
+  else username.innerText = thisUser.username;
   updateUser();
 })
-descript.querySelector("img").addEventListener("click",e=>{
-  descript.querySelector("span").contentEditable="true"
+descript.querySelector("img").addEventListener("click", e => {
+  descript.querySelector("span").contentEditable = "true"
   descript.querySelector("span").focus();
 })
 descript.querySelector("span").addEventListener("input", e => {
@@ -501,12 +507,12 @@ descript.querySelector("span").addEventListener("input", e => {
   }
   else tnt = descript.querySelector("span").innerText;
 })
-descript.querySelector("span").addEventListener("blur",e=>{
-  descript.querySelector("span").contentEditable="false";
-  if(tnt==="")descript.querySelector("span").innerText=thisUser.description;
-  else thisUser.description=tnt;
+descript.querySelector("span").addEventListener("blur", e => {
+  descript.querySelector("span").contentEditable = "false";
+  if (tnt === "") descript.querySelector("span").innerText = thisUser.description;
+  else thisUser.description = tnt;
   updateUser();
-  
+
 })
 createA.addEventListener("click", e => {
   header.style.animation = "swapout 0.2s";
@@ -621,27 +627,33 @@ back.addEventListener("click", () => {
 })
 firebase.auth().onAuthStateChanged((user) => {
   if (user) {
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     login.style.display = "inline-block";
     uid = user.uid;
     isAnonymous = user.isAnonymous;
+    users.child(uid).update({online:true});
+    users.child(uid).onDisconnect().update({online:false,lastOnline:firebase.database.ServerValue.TIMESTAMP});
     if (isAnonymous) updateUser();
     else {
       readUser(() => { if (user.displayName) setAccountInfo(user) });
       login.innerText = "Profile";
     };
   } else {
-    firebase.auth().signInAnonymously()
-      .then(() => {
-        console.log("Anonymous");
-        thisUser = {
-          username: "Guest" + (Math.random().toString().slice(2)),
-          points: 100
-        };
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-      });
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+    .then(() => {
+      firebase.auth().signInAnonymously()
+        .then(() => {
+          console.log("Anonymous");
+          thisUser = {
+            username: "Guest" + (Math.random().toString().slice(2)),
+            points: 100
+          };
+        })
+        .catch((error) => {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        });
+    })
   }
 });
 loading();
